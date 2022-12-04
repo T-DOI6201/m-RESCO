@@ -12,7 +12,7 @@ from resco_benchmark.traffic_signal import Signal
 class MultiSignal(gym.Env):
     def __init__(self, run_name, map_name, net, state_fn, reward_fn, route=None, gui=False, end_time=3600,
                  step_length=10, yellow_length=4, step_ratio=1, max_distance=200, lights=(), log_dir='/', libsumo=False,
-                 warmup=0, gymma=False):
+                 warmup=0, gymma=False, memo='default'):
         self.libsumo = libsumo
         self.gymma = gymma  # gymma expects sequential list of states/rewards instead of dict
         print(map_name, net, state_fn.__name__, reward_fn.__name__)
@@ -31,6 +31,8 @@ class MultiSignal(gym.Env):
         self.step_ratio = step_ratio
         self.connection_name = run_name + '-' + map_name + '---' + state_fn.__name__ + '-' + reward_fn.__name__
         self.map_name = map_name
+        self.memo = memo #add memo
+        self.agent_name, self.tr_num = run_name.split('-') #add
 
         # Run some steps in the simulation with default light configurations to detect phases
         if self.route is not None:
@@ -38,9 +40,11 @@ class MultiSignal(gym.Env):
         else:
             sumo_cmd = [sumolib.checkBinary('sumo'), '-c', net, '--no-warnings', 'True']
         if self.libsumo:
+            print("This trial is beginning by libsumo")
             traci.start(sumo_cmd)
             self.sumo = traci
         else:
+            print("This trial is beginning by TraCI")
             traci.start(sumo_cmd, label = self.connection_name)
             self.sumo = traci.getConnection(self.connection_name)
         self.signal_ids = self.sumo.trafficlight.getIDList()
@@ -59,7 +63,9 @@ class MultiSignal(gym.Env):
 
         self.signals = dict()
 
-        self.all_ts_ids = lights if len(lights) > 0 else self.sumo.trafficlight.getIDList()
+        #self.all_ts_ids = lights if len(lights) > 0 else self.sumo.trafficlight.getIDList()
+        if len(lights) == 0: lights = self.sumo.trafficlight.getIDList() #add following 2 codes instead of the above one
+        self.all_ts_ids = lights #add
         self.ts_starter = len(self.all_ts_ids)
         self.signal_ids = []
 
@@ -92,11 +98,19 @@ class MultiSignal(gym.Env):
         if not self.libsumo: traci.switch(self.connection_name)
         traci.close()
         self.connection_name = run_name + '-' + map_name + '-' + str(len(lights)) + '-' + state_fn.__name__ + '-' + reward_fn.__name__
+        self.connection_name += '-'+self.memo #add memo
+        '''
         if not os.path.exists(log_dir+self.connection_name):
             os.makedirs(log_dir+self.connection_name)
         self.sumo_cmd = None
         print('Connection ID', self.connection_name)
-
+        '''
+        self.modified_connection_name = self.agent_name + '-' + map_name + '-' + str(len(lights)) + '-' + state_fn.__name__ + '-' + reward_fn.__name__ + '-' + self.memo + os.sep + self.tr_num#
+        if not os.path.exists(log_dir+self.modified_connection_name):#
+            os.makedirs(log_dir+self.modified_connection_name)#
+        self.sumo_cmd = None#
+        print('modified Connection ID', self.modified_connection_name)#
+       
     def step_sim(self):
         # The monaco scenario expects .25s steps instead of 1s, account for that here.
         for _ in range(self.step_ratio):
@@ -123,7 +137,8 @@ class MultiSignal(gym.Env):
         else:
             self.sumo_cmd += ['-c', self.net]
         self.sumo_cmd += ['--random', '--time-to-teleport', '-1', '--tripinfo-output',
-                          os.path.join(self.log_dir, self.connection_name, 'tripinfo_' + str(self.run) + '.xml'),
+                          #os.path.join(self.log_dir, self.connection_name, 'tripinfo_' + str(self.run) + '.xml'),
+                          os.path.join(self.log_dir, self.modified_connection_name, 'tripinfo_' + str(self.run) + '.xml'),
                           '--tripinfo-output.write-unfinished',
                           '--no-step-log', 'True',
                           '--no-warnings', 'True']
@@ -214,7 +229,8 @@ class MultiSignal(gym.Env):
         })
 
     def save_metrics(self):
-        log = os.path.join(self.log_dir, self.connection_name+ os.sep + 'metrics_' + str(self.run) + '.csv')
+        #log = os.path.join(self.log_dir, self.connection_name+ os.sep + 'metrics_' + str(self.run) + '.csv') 
+        log = os.path.join(self.log_dir, self.modified_connection_name+ os.sep + 'metrics_' + str(self.run) + '.csv') 
         print('saving', log)
         with open(log, 'w+') as output_file:
             for line in self.metrics:

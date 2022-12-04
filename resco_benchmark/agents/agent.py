@@ -1,10 +1,12 @@
 import torch
-
+import os #for implementing GPU switching
 
 class Agent(object):
     def __init__(self):
-        if torch.cuda.is_available():
-            device = "cuda:0"
+        if torch.cuda.is_available(): #
+            if 'GPU_NUMBER' in os.environ: #
+                device = "cuda:" + str(os.environ['GPU_NUMBER']) #
+            else: device = "cuda:0"
         else:
             device = "cpu"
         self.device = torch.device(device)
@@ -31,9 +33,9 @@ class IndependentAgent(Agent):
     def observe(self, observation, reward, done, info):
         for agent_id in observation.keys():
             self.agents[agent_id].observe(observation[agent_id], reward[agent_id], done, info)
-            if done:
-                if info['eps'] % 100 == 0:
-                    self.agents[agent_id].save(self.config['log_dir']+'agent_'+agent_id)
+            #if done: not to save the configuration of the model
+                #if info['eps'] % 100 == 0:
+                #    self.agents[agent_id].save(self.config['log_dir']+'agent_'+agent_id)
 
 
 class SharedAgent(Agent):

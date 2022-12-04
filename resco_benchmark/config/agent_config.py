@@ -10,6 +10,99 @@ from resco_benchmark.agents.mplight import MPLight
 from resco_benchmark.agents.fma2c import FMA2C
 
 agent_configs = {
+    # add new agents
+    'DETUNED_TOTALWAIT': {
+        'agent': IDQN,
+        'state': states.totalWait,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'DETUNED_TOTALWAIT_QUEUE': {
+        'agent': IDQN,
+        'state': states.totalWait_queue,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'DETUNED_TOTALWAIT_QUEUE_APPROACH': {
+        'agent': IDQN,
+        'state': states.totalWait_queue_approach,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    #add new agents DISTANCEs
+    'DETUNED_150': {
+        'agent': IDQN,
+        'state': states.drq_norm,
+        'reward': rewards.wait_norm,
+        'max_distance': 150,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'DETUNED_100': {
+        'agent': IDQN,
+        'state': states.drq_norm,
+        'reward': rewards.wait_norm,
+        'max_distance': 100,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'DETUNED_50': {
+        'agent': IDQN,
+        'state': states.drq_norm,
+        'reward': rewards.wait_norm,
+        'max_distance': 50,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'DETUNED_10': {
+        'agent': IDQN,
+        'state': states.drq_norm,
+        'reward': rewards.wait_norm,
+        'max_distance': 10,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
     # *VAL configs have distance settings according to the validation scenarios
     'MAXWAVEVAL': {
         'agent': MAXWAVE,

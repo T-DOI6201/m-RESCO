@@ -1,3 +1,4 @@
+#This script is modified version!
 import pathlib
 import os
 import multiprocessing as mp
@@ -10,12 +11,13 @@ from resco_benchmark.config.map_config import map_configs
 from resco_benchmark.config.mdp_config import mdp_configs
 
 
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--agent", type=str, default='STOCHASTIC',
                     choices=['STOCHASTIC', 'MAXWAVE', 'MAXPRESSURE', 'IDQN', 'IPPO', 'MPLight', 'MA2C', 'FMA2C',
-                             'MPLightFULL', 'FMA2CFull', 'FMA2CVAL'])
+                             'MPLightFULL', 'FMA2CFull', 'FMA2CVAL', "DETUNED_TOTALWAIT", 
+                             "DETUNED_TOTALWAIT_QUEUE",'DETUNED_TOTALWAIT_QUEUE_APPROACH',
+                             "DETUNED_150", "DETUNED_100", "DETUNED_50", "DETUNED_10"])
     ap.add_argument("--trials", type=int, default=1)
     ap.add_argument("--eps", type=int, default=100)
     ap.add_argument("--procs", type=int, default=1)
@@ -24,10 +26,12 @@ def main():
                              'cologne1', 'cologne3', 'cologne8',
                              ])
     ap.add_argument("--pwd", type=str, default=os.path.dirname(__file__))
-    ap.add_argument("--log_dir", type=str, default=os.path.join(os.path.dirname(os.getcwd()), 'results' + os.sep))
-    ap.add_argument("--gui", type=bool, default=False)
-    ap.add_argument("--libsumo", type=bool, default=False)
+    ap.add_argument("--log_dir", type=str, default=os.path.join(os.path.dirname(os.getcwd()), 'results_modified' + os.sep)) #results->results_modified
+    ap.add_argument("--gui", type=bool, default=False)	#Pay attention to using type=bool
+    ap.add_argument("--libsumo", type=bool, default=False)    #--libsumo=False results in args.libsumo=True
     ap.add_argument("--tr", type=int, default=0)  # Can't multi-thread with libsumo, provide a trial number
+
+    ap.add_argument("--memo", type=str, default='') #Add new-argment "memo" to explain the configuration briefly in its log-file
     args = ap.parse_args()
 
     if args.libsumo and 'LIBSUMO_AS_TRACI' not in os.environ:
@@ -83,7 +87,7 @@ def run_trial(args, trial):
                       route=route, step_length=map_config['step_length'], yellow_length=map_config['yellow_length'],
                       step_ratio=map_config['step_ratio'], end_time=map_config['end_time'],
                       max_distance=agt_config['max_distance'], lights=map_config['lights'], gui=args.gui,
-                      log_dir=args.log_dir, libsumo=args.libsumo, warmup=map_config['warmup'])
+                      log_dir=args.log_dir, libsumo=args.libsumo, warmup=map_config['warmup'], memo=args.memo) #add memo
 
     agt_config['episodes'] = int(args.eps * 0.8)    # schedulers decay over 80% of steps
     agt_config['steps'] = agt_config['episodes'] * num_steps_eps
