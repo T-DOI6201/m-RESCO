@@ -103,6 +103,71 @@ agent_configs = {
         'TARGET_UPDATE': 500
     },
 
+    'NoActIndex': {
+        'agent': IDQN,
+        'state': states.noActIndex,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'NoApproach': {
+        'agent': IDQN,
+        'state': states.noApproach,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'NoTotalWait': {
+        'agent': IDQN,
+        'state': states.noTotalWait,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'NoQueue': {
+        'agent': IDQN,
+        'state': states.noQueue,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
+    'NoTotalSpeed': {
+        'agent': IDQN,
+        'state': states.noTotalSpeed,
+        'reward': rewards.wait_norm,
+        'max_distance': 200,
+        'BATCH_SIZE': 32,
+        'GAMMA': 0.99,
+        'EPS_START': 1.0,
+        'EPS_END': 0.0,
+        'EPS_DECAY': 220,
+        'TARGET_UPDATE': 500
+    },
+
     # *VAL configs have distance settings according to the validation scenarios
     'MAXWAVEVAL': {
         'agent': MAXWAVE,

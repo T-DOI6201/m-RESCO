@@ -17,7 +17,8 @@ def main():
                     choices=['STOCHASTIC', 'MAXWAVE', 'MAXPRESSURE', 'IDQN', 'IPPO', 'MPLight', 'MA2C', 'FMA2C',
                              'MPLightFULL', 'FMA2CFull', 'FMA2CVAL', "DETUNED_TOTALWAIT", 
                              "DETUNED_TOTALWAIT_QUEUE",'DETUNED_TOTALWAIT_QUEUE_APPROACH',
-                             "DETUNED_150", "DETUNED_100", "DETUNED_50", "DETUNED_10"])
+                             "DETUNED_150", "DETUNED_100", "DETUNED_50", "DETUNED_10",
+                             "NoActIndex", "NoApproach", "NoTotalWait", "NoQueue", "NoTotalSpeed"])
     ap.add_argument("--trials", type=int, default=1)
     ap.add_argument("--eps", type=int, default=100)
     ap.add_argument("--procs", type=int, default=1)
