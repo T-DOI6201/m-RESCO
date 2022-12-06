@@ -103,6 +103,7 @@ agent_configs = {
         'TARGET_UPDATE': 500
     },
 
+    #agent off 1 information
     'NoActIndex': {
         'agent': IDQN,
         'state': states.noActIndex,
