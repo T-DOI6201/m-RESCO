@@ -3,7 +3,6 @@ import pathlib
 import os
 import multiprocessing as mp
 
-
 from resco_benchmark.multi_signal import MultiSignal
 import argparse
 from resco_benchmark.config.agent_config import agent_configs #in the current situation, "resco_benchmark" is not need
