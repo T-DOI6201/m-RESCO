@@ -1,6 +1,6 @@
 #!/bin/bash
 #using libsumo
-#100-episodes * 20-trials 
+#1-agent * 100-episodes * 20-trials 
 
 export SUMO_HOME=/usr/share/sumo
 export -n LIBSUMO_AS_TRACI
